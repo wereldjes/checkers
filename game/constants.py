@@ -1,4 +1,6 @@
-import pygame
+"""
+Constants for the game files
+"""
 
 #board size
 WIDTH, HEIGHT = 800, 800
