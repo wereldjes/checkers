@@ -23,6 +23,9 @@ def main():
     while run:
         clock.tick(FPS)
 
+        if game.winner() != None:
+            print(game.winner())
+
         for event in pygame.event.get():
             #quit the game after clicking on close
             if event.type == pygame.QUIT:
@@ -31,6 +34,7 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 row, col = get_row_col_from_mouse(pos)
+                game.select(row, col)
 
         game.update()
 
