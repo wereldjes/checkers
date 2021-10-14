@@ -7,7 +7,6 @@ from .piece import Piece
 class Board:
     def __init__(self):
         self.board = []
-        self.selected_piece = None
         self.red_left = self.white_left = 12
         self.red_kings = self.white_kings = 0
         self.create_board()
@@ -55,3 +54,32 @@ class Board:
 
     def get_piece(self, row, col):
         return self.board[row][col]
+
+    def get_valid_moves(self, piece):
+        moves = {}
+        left = piece.col - 1
+        right = piece.col + 1
+        row = piece.row
+
+        if piece.color == ACTUAL_BLACK or piece.king:
+            moves.update(self._traverse_left(row -1, max(row-3), -1, piece.color, left))
+            moves.update(self._traverse_right(row -1, max(row-3, -1), -1, piece.color, right))
+
+        if piece.color == WHITE or piece.king:
+            pass
+
+    def _traverse_left(self, start, stop, step, color, left, skipped=[]):
+        moves = {}
+        last = []
+        for r in range(start, stop, step):
+            if left < 0:
+                break
+
+            current = self.board.get_piece(r, left)
+            if current == 0:
+                if skipped and not last:
+                    break
+            left -= 1
+
+    def _traverse_right(self, start, stop, step, color, right, skipped=[]):
+        pass
