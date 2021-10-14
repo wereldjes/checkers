@@ -5,21 +5,24 @@ from .piece import Piece
 
 
 class Board:
+    """Class to create board and track board methods."""
+
     def __init__(self):
+        """Class constructor."""
         self.board = []
         self.red_left = self.white_left = 12
         self.red_kings = self.white_kings = 0
         self.create_board()
 
-    #Draw squares on the screen aka checkerboard
     def draw_squares(self, win):
+        """Draw squares on the screen aka checkerboard."""
         win.fill(BLACK)
         for row in range(ROWS):
             for col in range(row % 2, COLS, 2):
                 pygame.draw.rect(win, RED, (row*SQUARE_SIZE, col *SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
-    #create the board with the pieces on it and keep track of what is happening
     def create_board(self):
+        """create the board with the pieces on it and keep track of what is happening."""
         for row in range(ROWS):
             self.board.append([])
             for col in range(COLS):
@@ -34,6 +37,7 @@ class Board:
                     self.board[row].append(0)
 
     def draw(self, win):
+        """Draw checker pieces on the board."""
         self.draw_squares(win)
         for row in range(ROWS):
             for col in range(COLS):
@@ -42,6 +46,7 @@ class Board:
                     piece.draw(win)
 
     def move(self, piece, row, col):
+        """Move checkerpiece to a certain row or column."""
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
 
@@ -53,9 +58,11 @@ class Board:
                 self.red_kings += 1
 
     def get_piece(self, row, col):
+        """Get checkerpiece."""
         return self.board[row][col]
 
     def get_valid_moves(self, piece):
+        """Check for valid moves using traverse_left and traverse_right methods."""
         moves = {}
         left = piece.col - 1
         right = piece.col + 1
@@ -72,6 +79,7 @@ class Board:
         return moves
 
     def _traverse_left(self, start, stop, step, color, left, skipped=[]):
+        """Calculate where a checkerpiece can move on its left side."""
         moves = {}
         last = []
         for r in range(start, stop, step):
@@ -106,6 +114,7 @@ class Board:
         return moves
 
     def _traverse_right(self, start, stop, step, color, right, skipped=[]):
+        """Calculate where a checkerpiece can move on its right side."""
         moves = {}
         last = []
         for r in range(start, stop, step):
@@ -140,6 +149,7 @@ class Board:
         return moves
 
     def remove(self, pieces):
+        """Remove a checkerpiece from the board when it is taken."""
         for piece in pieces:
             self.board[piece.row][piece.col] = 0
             if piece != 0:
@@ -149,9 +159,23 @@ class Board:
                     self.white_left -= 1
 
     def winner(self):
+        """declare a winner when the opposing player has 0 checkers on the board."""
         if self.red_left <= 0:
-            return WHITE
+            return "White won"
         elif self.white_left <= 0:
-            return ACTUAL_BLACK
+            return "Black won"
 
         return None
+
+    def evaluate(self):
+        """Evaluate board score and add multiplier to kings so that they are worth more."""
+        return self.white_left - self.red_left + (self.white_kings * 0.5 - self.red_kings * 0.5)
+
+    def get_all_pieces(self, color):
+        """Get all checkers pieces on the board with the requested color from param."""
+        pieces = []
+        for row in self.board:
+            for piece in row:
+                if piece != 0 and piece.color == color:
+                    pieces.append(piece)
+        return pieces
