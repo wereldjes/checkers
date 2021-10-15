@@ -50,7 +50,7 @@ class Board:
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
 
-        if row == ROWS - 1 or row == 0:
+        if row == ROWS - 1 or row == 0 and not piece.king:
             piece.make_king()
             if piece.color == WHITE:
                 self.white_kings += 1
@@ -169,7 +169,7 @@ class Board:
 
     def evaluate(self):
         """Evaluate board score and add multiplier to kings so that they are worth more."""
-        return self.white_left - self.red_left + (self.white_kings * 0.5 - self.red_kings * 0.5)
+        return self.white_left - self.red_left + (self.white_kings * 1.5 - self.red_kings * 1.5)
 
     def get_all_pieces(self, color):
         """Get all checkers pieces on the board with the requested color from param."""
