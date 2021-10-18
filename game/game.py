@@ -79,6 +79,6 @@ class Game:
         return self.board
 
     def ai_move(self, board):
-        """Update board object with new board."""
+        """Update board object with new board and change turn."""
         self.board = board
         self.change_turn()

@@ -4,7 +4,13 @@ from game.constants import WHITE, ACTUAL_BLACK
 
 
 def minimax(board, depth, max_player):
-    """AI algorithm to check which is the best move."""
+    """
+    AI algorithm to check which is the best move.
+
+    :param board: an object of the board
+    :param depth: the depth of the tree. a higher number means a better AI but also a longer wait time
+    :param max_player: check if the player is maximizing his score or not
+    """
     if depth == 0:
         return board.evaluate(), board
 

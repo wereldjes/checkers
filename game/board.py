@@ -78,6 +78,7 @@ class Board:
 
         return moves
 
+    #pylint: disable=too-many-arguments
     def _traverse_left(self, start, stop, step, color, left, skipped=[]):
         """Calculate where a checkerpiece can move on its left side."""
         moves = {}
